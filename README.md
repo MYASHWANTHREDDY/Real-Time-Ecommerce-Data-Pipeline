@@ -33,6 +33,7 @@ The pipeline covers multiple analytical dimensions, including high-priority orde
 ---
 
 ## Technologies and Tools
+
 - **Programming Language**: Python (with PySpark)
 - **Data Processing**: PySpark
 - **Database**: MongoDB
@@ -45,33 +46,33 @@ The pipeline covers multiple analytical dimensions, including high-priority orde
 ## Pipeline Workflow
 
 ### 1. Data Ingestion
-- **Tool**: Apache NiFi  
-- **Process**:
-  - Monitors directories or APIs for incoming data.
-  - Routes raw data into MongoDB using the `GetFile` and `PutMongoRecord` processors.
+**Tool**: Apache NiFi  
+**Process**:
+- Monitors directories or APIs for incoming data.
+- Routes raw data into MongoDB using the `GetFile` and `PutMongoRecord` processors.
 
 ### 2. Data Processing
-- **Tool**: PySpark  
-- **Scripts**:
-  - **`processing.py`**:
-    - Loads data from MongoDB.
-    - Performs preprocessing, filtering, and advanced analyses.
-    - Partitions high-priority orders into 64 smaller files for efficient processing.
-    - Saves results of analyses as separate CSV files.
-  - **`combined.py`**:
-    - Merges the partitioned files into a single dataset (`output_file.csv`).
+**Tool**: PySpark  
+**Scripts**:
+- **`processing.py`**:
+  - Loads data from MongoDB.
+  - Performs preprocessing, filtering, and advanced analyses.
+  - Partitions high-priority orders into 64 smaller files for efficient processing.
+  - Saves results of analyses as separate CSV files.
+- **`combined.py`**:
+  - Merges the partitioned files into a single dataset (`output_file.csv`).
 
 ### 3. Data Storage
-- **Tool**: MongoDB  
-- **Process**:
-  - Stores raw data ingested from NiFi.
-  - Saves processed datasets for quick retrieval and visualization.
+**Tool**: MongoDB  
+**Process**:
+- Stores raw data ingested from NiFi.
+- Saves processed datasets for quick retrieval and visualization.
 
 ### 4. Data Visualization
-- **Tool**: Tableau Public  
-- **Process**:
-  - Exports processed data (`output_file.csv`) into Tableau.
-  - Creates dashboards showcasing trends, revenue, and sales distribution.
+**Tool**: Tableau Public  
+**Process**:
+- Exports processed data (`output_file.csv`) into Tableau.
+- Creates dashboards showcasing trends, revenue, and sales distribution.
 
 ---
 
@@ -88,7 +89,7 @@ The dataset contains e-commerce transaction records, including:
 
 **Download Link**:  
 The dataset used for this project is publicly available and can be downloaded from:  
-[Sample Dataset](https://excelbianalytics.com/wp/downloads-18-sample-csv-files-data-sets-for-testing-sales/)
+[https://excelbianalytics.com/wp/downloads-18-sample-csv-files-data-sets-for-testing-sales/](https://excelbianalytics.com/wp/downloads-18-sample-csv-files-data-sets-for-testing-sales/)
 
 ---
 
@@ -99,41 +100,17 @@ The dataset used for this project is publicly available and can be downloaded fr
    - Place the file in the `data/` folder as `dataset.csv`.
    - Ensure the filename matches the script configurations or update the script accordingly.
 
-2. **Install Prerequisites**:
-   - Python 3.10+
-   - Java 8 or Java 11
-   - winutils (Windows)
-   - PySpark
-   - MongoDB
-   - Apache NiFi
-   - Tableau Public
-   - Required Python Libraries:
-     ```bash
-     pip install pyspark pandas
-     ```
-
-3. **Execution Steps**:
-   - **Run Python Scripts**:
-     - **`processing.py`**:
-       ```bash
-       python scripts/processing.py
-       ```
-     - **`combined.py`**:
-       ```bash
-       python scripts/combined.py
-       ```
-   - **Visualize in Tableau**:
-     - Load the `output/output_file.csv` file into Tableau Public.
-     - Use the provided dashboard file or create your own dashboards.
-
 ---
 
 ## Data Processing
 
-### 1. Data Loading
+### `processing.py` Script
+The core of the pipeline processes raw data from MongoDB, performs multiple transformations and analyses, and saves results as CSV files. Below is a detailed breakdown of its functionalities:
+
+#### 1. Data Loading
 - Connects to MongoDB and retrieves raw data from the collection `salesDB.sales_data`.
 
-### 2. Data Preprocessing
+#### 2. Data Preprocessing
 - **Date Conversion**:
   - Converts `Order Date` and `Ship Date` fields into proper date formats for calculations.
 - **Derived Fields**:
@@ -143,53 +120,103 @@ The dataset used for this project is publicly available and can be downloaded fr
     - Adds a calculated field for profit margin as a percentage:  
       `Profit Margin (%) = (Profit / Revenue) × 100`
 
-### 3. Analytical Tasks
+#### 3. Analytical Tasks
 The script performs the following analyses and saves results as CSV files:
+
 - **High-Priority Orders**:
   - Filters orders with `Order Priority = "H" or "C"`.
   - Partitions these orders into 64 smaller files for efficient processing.
-  - **Output**: `output/high_priority_orders/`
+  - **Output**: Partitioned files saved in `output/high_priority_orders/`.
 - **Item-Wise Trends**:
   - Groups data by `Item Type` to calculate:
     - Total units sold.
     - Total revenue.
     - Total profit.
-  - **Output**: `output/top_selling_items.csv`
+  - **Output**: `output/top_selling_items.csv`.
 - **Regional Sales**:
   - Groups data by `Region` to calculate:
     - Total revenue.
     - Total profit.
     - Total units sold.
-  - **Output**: `output/sales_per_region.csv`
+  - **Output**: `output/sales_per_region.csv`.
 - **Sales Channel Analysis**:
   - Groups data by `Sales Channel` (Online/Offline) to calculate:
     - Total revenue.
     - Total units sold.
-  - **Output**: `output/sales_channel_performance.csv`
+  - **Output**: `output/sales_channel_performance.csv`.
 - **Inventory Turnover**:
   - Summarizes total units sold for each `Item Type`.
-  - **Output**: `output/inventory_turnover.csv`
+  - **Output**: `output/inventory_turnover.csv`.
 - **Order Fulfillment Times**:
   - Computes the average fulfillment time (in days) for orders grouped by `Region`.
-  - **Output**: `output/order_fulfillment_time.csv`
+  - **Output**: `output/order_fulfillment_time.csv`.
 - **Profit Margin Analysis**:
   - Groups data by `Item Type` to calculate:
     - Average profit margin percentage.
-  - **Output**: `output/profit_margin_analysis.csv`
+  - **Output**: `output/profit_margin_analysis.csv`.
+
+---
+
+## Steps to Run the Project
+
+### Prerequisites
+Install the following tools:
+- Python 3.10+
+- Java 8 or Java 11
+- `winutils` (Windows)
+- PySpark
+- MongoDB
+- Apache NiFi
+- Tableau Public
+
+Install required Python libraries:
+```bash
+pip install pyspark pandas
+## Execution Steps
+
+### 1. Download the Dataset:
+- Download the dataset from the link:  
+  [https://excelbianalytics.com/wp/downloads-18-sample-csv-files-data-sets-for-testing-sales/](https://excelbianalytics.com/wp/downloads-18-sample-csv-files-data-sets-for-testing-sales/)
+- Place the dataset in the `data/` folder as `dataset.csv`.
+
+### 2. Run Python Scripts:
+
+- **`processing.py`**:
+  - Performs preprocessing, filtering, partitioning, and analyses.  
+    ```bash
+    python scripts/processing.py
+    ```
+
+- **`combined.py`**:
+  - Merges the partitioned files into a single dataset (`output_file.csv`).  
+    ```bash
+    python scripts/combined.py
+    ```
+
+### 3. Visualize in Tableau:
+- Load the `output/output_file.csv` file into Tableau Public.
+- Use the provided dashboard file or create your own dashboards.
+
+---
+
+## Visualization Example
+Refer to the Visualization file.
 
 ---
 
 ## Future Enhancements
-- **Real-Time Data Ingestion**:
-  - Use Apache NiFi to connect to live data streams or APIs for real-time updates.
-- **Dynamic Data Processing**:
-  - Add support for multiple datasets from various sources (e.g., inventory logs, customer feedback).
-- **Machine Learning Integration**:
-  - Build predictive models for:
-    - Demand forecasting
-    - Customer segmentation
-    - Churn prediction
-- **Cloud Integration**:
-  - Deploy the pipeline on AWS or Google Cloud Platform for scalability and performance optimization.
 
+### 1. Real-Time Data Ingestion:
+- Use Apache NiFi to connect to live data streams or APIs for real-time updates.
 
+### 2. Dynamic Data Processing:
+- Add support for multiple datasets from various sources (e.g., inventory logs, customer feedback).
+
+### 3. Machine Learning Integration:
+- Build predictive models for:
+  - Demand forecasting
+  - Customer segmentation
+  - Churn prediction
+
+### 4. Cloud Integration:
+- Deploy the pipeline on AWS or Google Cloud Platform for scalability and performance optimization.
