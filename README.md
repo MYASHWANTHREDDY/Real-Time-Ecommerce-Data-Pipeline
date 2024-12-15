@@ -4,18 +4,21 @@
 This project implements a modular and scalable data pipeline for processing, analyzing, and visualizing large-scale e-commerce datasets. The pipeline automates data ingestion using Apache NiFi, processes data using PySpark, stores data in MongoDB, and generates actionable insights through Tableau dashboards.  
 The pipeline covers multiple analytical dimensions, including high-priority order filtering, item trends, sales channels, regional sales distribution, inventory turnover, order fulfillment times, and profit margin analyses. Results are saved as CSV files for visualization in Tableau.
 
+---
+
 ## Features
-### Automated Data Ingestion:
+
+### Automated Data Ingestion
 - Automates the flow of raw data into MongoDB using Apache NiFi.
 
-### Distributed Data Processing:
+### Distributed Data Processing
 - PySpark performs distributed processing and advanced data transformations.
 - Includes multiple analyses such as high-priority orders, sales trends, and profit analysis.
 
-### Flexible Data Storage:
+### Flexible Data Storage
 - MongoDB stores raw and processed data with schema flexibility.
 
-### Comprehensive Data Visualization:
+### Comprehensive Data Visualization
 - Tableau dashboards present insights such as:
   - Total profit by region and item type.
   - Sales distribution across regions.
@@ -24,49 +27,56 @@ The pipeline covers multiple analytical dimensions, including high-priority orde
   - Item-wise profit margins.
   - Analysis of high-priority orders.
 
-### Modular Architecture:
+### Modular Architecture
 - Designed for scalability and extensibility for future real-time analytics and machine learning.
 
+---
+
 ## Technologies and Tools
-- **Programming Language**: Python (with PySpark)  
-- **Data Processing**: PySpark  
-- **Database**: MongoDB  
-- **Data Ingestion**: Apache NiFi  
-- **Visualization**: Tableau Public  
-- **Version Control**: GitHub  
+- **Programming Language**: Python (with PySpark)
+- **Data Processing**: PySpark
+- **Database**: MongoDB
+- **Data Ingestion**: Apache NiFi
+- **Visualization**: Tableau Public
+- **Version Control**: GitHub
+
+---
 
 ## Pipeline Workflow
 
 ### 1. Data Ingestion
-**Tool**: Apache NiFi  
-**Process**:
-- Monitors directories or APIs for incoming data.
-- Routes raw data into MongoDB using the `GetFile` and `PutMongoRecord` processors.
+- **Tool**: Apache NiFi  
+- **Process**:
+  - Monitors directories or APIs for incoming data.
+  - Routes raw data into MongoDB using the `GetFile` and `PutMongoRecord` processors.
 
 ### 2. Data Processing
-**Tool**: PySpark  
-**Scripts**:  
-- **`processing.py`**:
-  - Loads data from MongoDB.
-  - Performs preprocessing, filtering, and advanced analyses.
-  - Partitions high-priority orders into 64 smaller files for efficient processing.
-  - Saves results of analyses as separate CSV files.
-- **`combined.py`**:
-  - Merges the partitioned files into a single dataset (`output_file.csv`).
+- **Tool**: PySpark  
+- **Scripts**:
+  - **`processing.py`**:
+    - Loads data from MongoDB.
+    - Performs preprocessing, filtering, and advanced analyses.
+    - Partitions high-priority orders into 64 smaller files for efficient processing.
+    - Saves results of analyses as separate CSV files.
+  - **`combined.py`**:
+    - Merges the partitioned files into a single dataset (`output_file.csv`).
 
 ### 3. Data Storage
-**Tool**: MongoDB  
-**Process**:
-- Stores raw data ingested from NiFi.
-- Saves processed datasets for quick retrieval and visualization.
+- **Tool**: MongoDB  
+- **Process**:
+  - Stores raw data ingested from NiFi.
+  - Saves processed datasets for quick retrieval and visualization.
 
 ### 4. Data Visualization
-**Tool**: Tableau Public  
-**Process**:
-- Exports processed data (`output_file.csv`) into Tableau.
-- Creates dashboards showcasing trends, revenue, and sales distribution.
+- **Tool**: Tableau Public  
+- **Process**:
+  - Exports processed data (`output_file.csv`) into Tableau.
+  - Creates dashboards showcasing trends, revenue, and sales distribution.
+
+---
 
 ## Dataset
+
 ### Description
 The dataset contains e-commerce transaction records, including:
 - **Region**: Geographic region of the transaction.
@@ -78,11 +88,12 @@ The dataset contains e-commerce transaction records, including:
 
 **Download Link**:  
 The dataset used for this project is publicly available and can be downloaded from:  
-[Sample CSV Files - Excel BIAN Analytics](https://excelbianalytics.com/wp/downloads-18-sample-csv-files-data-sets-for-testing-sales/)
+[Sample Dataset](https://excelbianalytics.com/wp/downloads-18-sample-csv-files-data-sets-for-testing-sales/)
 
 ---
 
 ## Setup Instructions
+
 1. **Download the Dataset**:
    - Download the dataset from the link above.
    - Place the file in the `data/` folder as `dataset.csv`.
@@ -180,4 +191,5 @@ The script performs the following analyses and saves results as CSV files:
     - Churn prediction
 - **Cloud Integration**:
   - Deploy the pipeline on AWS or Google Cloud Platform for scalability and performance optimization.
+
 
