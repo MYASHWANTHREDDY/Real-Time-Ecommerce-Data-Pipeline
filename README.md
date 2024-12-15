@@ -170,8 +170,8 @@ Install the following tools:
 - Tableau Public
 
 Install required Python libraries:
-```bash
 pip install pyspark pandas
+
 ## Execution Steps
 
 ### 1. Download the Dataset:
