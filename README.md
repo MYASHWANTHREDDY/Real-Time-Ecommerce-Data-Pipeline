@@ -1,4 +1,4 @@
-**Real-Time Data Pipeline for E-Commerce Analysis**
+### **Real-Time Data Pipeline for E-Commerce Analysis**
 ## Overview
 This project implements a modular and scalable data pipeline for processing, analyzing, and visualizing large-scale e-commerce datasets. The pipeline automates data ingestion using Apache NiFi, processes data using PySpark, stores data in MongoDB, and generates actionable insights through Tableau dashboards.
 The pipeline covers multiple analytical dimensions, including high-priority order filtering, item trends, sales channels, regional sales distribution, inventory turnover, order fulfillment times, and profit margin analyses. Results are saved as CSV files for visualization in Tableau.
